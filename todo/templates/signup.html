@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signup | TodoApp</title>
+  <link rel="stylesheet" href="{% static 'css/auth.css'%}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="auth-container">
+    <div class="form-box">
+      <div class="form-header">
+        <h2>Create Account</h2>
+        <p>Get started with your personal todo list</p>
+      </div>
+
+      <form method="post">
+        {% csrf_token %}
+        {% if error %}
+          <div class="toast error">{{ error }}</div>
+        {% endif %}
+
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input class="inp" type="text" name="username" id="username" required placeholder="Choose a username">
+        </div>
+
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input class="inp" type="email" name="email" id="email" required placeholder="Enter your email">
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input class="inp" type="password" name="password" id="password" required placeholder="Create a password">
+        </div>
+
+        <button type="submit" class="submit-btn">Signup</button>
+
+        <p class="auth-switch">
+          Already have an account? <a href="/login">Login</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // 🔁 Dark mode toggle + localStorage
+    const toggle = document.getElementById('themeToggle');
+    toggle.addEventListener('change', () => {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    window.onload = () => {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark');
+        toggle.checked = true;
+      }
+
+      // Auto-hide toast
+      const toast = document.querySelector('.toast');
+      if (toast) {
+        setTimeout(() => toast.remove(), 3000);
+      }
+    };
+  </script>
+</body>
+</html>

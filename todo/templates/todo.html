@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Todo List</title>
+    <link rel="stylesheet" href="{% static 'css/todo.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Hello, {{ user.username }}</h1>
+            <a class="logout-btn" href="{% url 'signout' %}">Logout</a>
+            <label class="toggle-switch">
+                <input type="checkbox" id="themeToggle">
+                <span class="slider"></span>
+            </label>
+
+        </header>
+
+        <section class="todo-form">
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" name="title" placeholder="Enter your task..." required>
+                <button type="submit">Add Task</button>
+            </form>
+        </section>
+
+        <section class="task-list">
+            {% if res %}
+                {% for todo in res %}
+                <div class="task-card">
+                    <div class="task-info">
+                        <span class="task-num">{{ todo.user_task_id }}</span>
+                        <p class="task-title">{{ todo.title }}</p>
+                    </div>
+                    <div class="task-actions">
+                        <a href="{% url 'edit_todo' todo.srno %}" title="Edit">&#9998;</a>
+                        <a href="{% url 'delete_todo' todo.srno %}" title="Delete">&#10006;</a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-tasks">You haven't added any tasks yet.</p>
+            {% endif %}
+        </section>
+    </div>
+        </div>
+
+    <!-- 🔁 Step 3: Dark Mode Toggle Script -->
+    <script>
+      const toggle = document.getElementById('themeToggle');
+      toggle.addEventListener('change', () => {
+        document.body.classList.toggle('dark');
+        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+      });
+
+      // Load saved theme preference on page load
+      window.onload = () => {
+        if (localStorage.getItem('theme') === 'dark') {
+          document.body.classList.add('dark');
+          toggle.checked = true;
+        }
+      };
+    </script>
+
+</body>
+</html>
+
+</body>
+</html>

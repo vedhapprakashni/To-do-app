@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | TodoApp</title>
+  <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="auth-container">
+    <div class="form-box">
+      <div class="form-header">
+        <h2>Welcome Back 👋</h2>
+        <p>Please log in to continue</p>
+      </div>
+
+      <form method="post">
+        {% csrf_token %}
+        {% if error %}
+          <div class="toast error">{{ error }}</div>
+        {% endif %}
+
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input class="inp" type="text" name="fnm" id="username" required placeholder="Enter your username">
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input class="inp" type="password" name="pwd" id="password" required placeholder="Enter your password">
+        </div>
+
+        <button type="submit" class="submit-btn">Login</button>
+
+        <p class="auth-switch">
+          Don't have an account? <a href="/signup">Signup</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // 🔁 Dark mode toggle + localStorage
+    const toggle = document.getElementById('themeToggle');
+    toggle.addEventListener('change', () => {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    window.onload = () => {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark');
+        toggle.checked = true;
+      }
+
+      // Auto-hide toast
+      const toast = document.querySelector('.toast');
+      if (toast) {
+        setTimeout(() => toast.remove(), 3000);
+      }
+    };
+  </script>
+</body>
+</html>

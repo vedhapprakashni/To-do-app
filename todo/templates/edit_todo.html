@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="{% static 'css/todo.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Edit Task</h1>
+            <a class="logout-btn" href="{% url 'signout' %}">Logout</a>
+        </header>
+
+        <section class="todo-form">
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" name="title" value="{{ obj.title }}" required>
+                <button type="submit">Update Task</button>
+            </form>
+        </section>
+
+        <section class="task-list">
+            {% for todo in res %}
+            <div class="task-card">
+                <div class="task-info">
+                    <span class="task-num">{{ todo.user_task_id }}</span>
+                    <p class="task-title">{{ todo.title }}</p>
+                </div>
+                <div class="task-actions">
+                    <a href="{% url 'edit_todo' todo.srno %}" title="Edit">&#9998;</a>
+                    <a href="{% url 'delete_todo' todo.srno %}" title="Delete">&#10006;</a>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </div>
+</body>
+</html>
